@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TopSalão Premium - Banco TXT</title>
+    <title>TopSalão Agendamentos </title>
     <style>
         :root {
             --bg: #050608;
@@ -228,12 +228,23 @@
         function confirmarAgendamento() {
             const nome = document.getElementById('nome-cliente').value;
             if(!nome) return alert("Por favor, digite seu nome!");
-            agendaGlobal.push({ dia: diaFocoCliente, inicio: slotSelecionado.inicio, fim: slotSelecionado.fim, nome: nome, servico: document.getElementById('servico').options[document.getElementById('servico').selectedIndex].text });
+
+            // Adiciona ao banco
+            agendaGlobal.push({ 
+                dia: diaFocoCliente, 
+                inicio: slotSelecionado.inicio, 
+                fim: slotSelecionado.fim, 
+                nome: nome, 
+                servico: document.getElementById('servico').options[document.getElementById('servico').selectedIndex].text 
+            });
+
+            // Salva os dados
             atualizarStorage();
+
             alert(`Sucesso! Agendado para o dia ${diaFocoCliente}.`);
-            document.getElementById('nome-cliente').value = "";
-            document.getElementById('finalizar').classList.add('hidden');
-            irPara('home');
+
+            // ESTA É A LINHA QUE ATUALIZA A PÁGINA SOZINHA
+            location.reload(); 
         }
 
         function abrirSenha() { document.getElementById('modal-senha').style.display = 'flex'; }
