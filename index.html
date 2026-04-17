@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TopSalão Agendamentos</title>
+    <title>TopSalão Premium - Banco TXT</title>
     <style>
         :root {
             --bg: #050608;
@@ -217,33 +217,49 @@
         }
 
         function gerarHorarios() {
-            const duracao = parseInt(document.getElementById('servico').value);
-            const container = document.getElementById('lista-horarios');
-            container.innerHTML = "";
-            document.getElementById('finalizar').classList.add('hidden');
+    // 1. Pega a duração exata do serviço selecionado
+    const duracao = parseInt(document.getElementById('servico').value); 
+    const container = document.getElementById('lista-horarios');
+    container.innerHTML = "";
+    document.getElementById('finalizar').classList.add('hidden');
 
-            for (let t = START; t + duracao <= END; t += duracao) {
-                const ocupado = agendaGlobal.some(a => 
-                    a.dia == diaFocoCliente && a.mes == mesAtual && a.ano == anoAtual &&
-                    ((t >= a.inicio && t < a.fim) || (t + duracao > a.inicio && t + duracao <= a.fim))
-                );
-
-                if (!ocupado) {
-                    const h = Math.floor(t / 60).toString().padStart(2, '0');
-                    const m = (t % 60).toString().padStart(2, '0');
-                    const div = document.createElement('div');
-                    div.className = 'slot';
-                    div.innerText = `${h}:${m}`;
-                    div.onclick = () => {
-                        document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
-                        div.classList.add('active');
-                        slotSelecionado = { inicio: t, fim: t + duracao };
-                        document.getElementById('finalizar').classList.remove('hidden');
-                    };
-                    container.appendChild(div);
-                }
+    // 2. O 't += 20' cria opções a cada 20 minutos (ex: 08:00, 08:20, 08:40...)
+    // Mas você pode mudar para 't += 10' para ter ainda mais opções
+    for (let t = START; t + duracao <= END; t += 20) {
+        
+        // 3. LOGICA DE COLISÃO: Verifica se QUALQUER PARTE do tempo (início ao fim) está ocupada
+        const ocupado = agendaGlobal.some(a => {
+            if (a.dia == diaFocoCliente && a.mes == mesAtual && a.ano == anoAtual) {
+                // Se o início do novo (t) for antes do fim do antigo (a.fim) 
+                // E o fim do novo (t + duracao) for depois do início do antigo (a.inicio)
+                return t < a.fim && (t + duracao) > a.inicio;
             }
+            return false;
+        });
+
+        if (!ocupado) {
+            const h = Math.floor(t / 60).toString().padStart(2, '0');
+            const m = (t % 60).toString().padStart(2, '0');
+            
+            const div = document.createElement('div');
+            div.className = 'slot';
+            div.innerText = `${h}:${m}`;
+            
+            div.onclick = () => {
+                document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
+                div.classList.add('active');
+                
+                // Salva exatamente o início e o fim calculado
+                slotSelecionado = { inicio: t, fim: t + duracao };
+                document.getElementById('finalizar').classList.remove('hidden');
+            };
+            container.appendChild(div);
         }
+    }
+}
+                
+            
+        
 
         function confirmarAgendamento() {
             const nome = document.getElementById('nome-cliente').value;
