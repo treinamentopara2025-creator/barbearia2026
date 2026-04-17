@@ -217,12 +217,12 @@
         }
 
         function gerarHorarios() {
-            const duracao = parseInt(document.getElementById('servico').value) + 10;
+            const duracao = parseInt(document.getElementById('servico').value);
             const container = document.getElementById('lista-horarios');
             container.innerHTML = "";
             document.getElementById('finalizar').classList.add('hidden');
 
-            for (let t = START; t + duracao <= END; t += 20) {
+            for (let t = START; t + duracao <= END; t += duracao) {
                 const ocupado = agendaGlobal.some(a => 
                     a.dia == diaFocoCliente && a.mes == mesAtual && a.ano == anoAtual &&
                     ((t >= a.inicio && t < a.fim) || (t + duracao > a.inicio && t + duracao <= a.fim))
