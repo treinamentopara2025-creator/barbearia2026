@@ -25,25 +25,22 @@
             display: flex; flex-direction: column; border: 1px solid var(--border); position: relative;
         }
 
-        /* AJUSTE DO HEADER PARA A FOTO */
         header { padding: 25px; text-align: center; border-bottom: 1px solid var(--border); }
         .logo-img {
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            border: 3px solid var(--gold);
-            margin-bottom: 10px;
-            object-fit: cover;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            width: 250px; height: 250px;
+            border-radius: 50%; border: 2px solid var(--gold);
+            margin: 0 auto 10px auto; display: block;
+            object-fit: cover; box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
         }
         .logo { font-size: 1.5rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
 
         main { padding: 20px; flex-grow: 1; }
         .hidden { display: none !important; }
 
-        /* CALENDÁRIOS */
         .calendar-wrap { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border); }
-        .cal-header { display: flex; justify-content: space-between; color: var(--gold); font-weight: bold; margin-bottom: 15px; font-size: 0.9rem; }
+        .cal-header { display: flex; justify-content: space-between; color: var(--gold); font-weight: bold; margin-bottom: 15px; font-size: 0.9rem; align-items: center; }
+        .nav-btn { cursor: pointer; padding: 5px 15px; background: rgba(255,255,255,0.05); border-radius: 5px; user-select: none; }
+        
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
         .weekday { font-size: 0.6rem; color: var(--gold); padding-bottom: 5px; }
         .day { padding: 10px 0; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; border: 1px solid transparent; }
@@ -51,32 +48,26 @@
         .day.selected { background: var(--gold); color: #000; font-weight: bold; box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
         .day.has-event { border-bottom: 2px solid var(--cyan); }
 
-        /* BOTÕES E INPUTS */
         .btn-access { width: 100%; padding: 20px; margin: 10px 0; border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; border: none; font-size: 0.9rem; transition: 0.3s; }
         .btn-gold { background: var(--gold); color: #000; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2); }
-        .btn-gold:hover { transform: translateY(-2px); }
         .btn-outline { background: transparent; color: var(--dim); border: 1px solid var(--border); }
         
         .label { color: var(--gold); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1.5px; }
         select, input { width: 100%; background: #1a1c26; border: 1px solid var(--border); color: white; padding: 16px; border-radius: 12px; margin-bottom: 15px; outline: none; font-size: 1rem; }
 
-        /* HORÁRIOS */
         .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .slot { background: var(--border); padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 0.9rem; transition: 0.3s; border: 1px solid transparent; }
-        .slot:hover { border-color: var(--cyan); color: var(--cyan); }
-        .slot.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,242,255,0.1); box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
+        .slot { background: var(--border); padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 0.9rem; transition: 0.3s; }
+        .slot.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,242,255,0.1); border: 1px solid var(--cyan); }
 
-        /* PAINEL PRO */
         #modal-senha { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
         .card-pro { background: var(--card); padding: 18px; border-radius: 15px; margin-bottom: 12px; border-left: 4px solid var(--cyan); display: flex; justify-content: space-between; align-items: center; }
-        .empty-state { text-align: center; padding: 40px; color: gray; font-size: 0.85rem; font-style: italic; }
     </style>
 </head>
 <body>
 
     <div id="modal-senha">
-        <div style="background:var(--card); padding:30px; border-radius:20px; width:85%; text-align:center; border:1px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-            <h3 style="margin-bottom:20px; color:var(--gold); text-transform: uppercase; letter-spacing: 2px;">Acesso Restrito</h3>
+        <div style="background:var(--card); padding:30px; border-radius:20px; width:85%; text-align:center; border:1px solid var(--gold);">
+            <h3 style="margin-bottom:20px; color:var(--gold);">Acesso Restrito</h3>
             <input type="password" id="input-senha" placeholder="Senha do Barbeiro" style="text-align: center;">
             <button class="btn-access btn-gold" onclick="validarSenha()">Entrar no Painel</button>
             <button onclick="fecharSenha()" style="background:none; border:none; color:gray; margin-top:10px; cursor:pointer;">Voltar</button>
@@ -101,7 +92,11 @@
             
             <span class="label">1. Escolha o dia do mês</span>
             <div class="calendar-wrap">
-                <div class="cal-header"><span>‹</span> ABRIL 2026 <span>›</span></div>
+                <div class="cal-header">
+                    <span class="nav-btn" onclick="mudarMes(-1)">‹</span>
+                    <span id="mes-nome-cliente">ABRIL 2026</span>
+                    <span class="nav-btn" onclick="mudarMes(1)">›</span>
+                </div>
                 <div class="days-grid" id="cal-days-cliente"></div>
             </div>
 
@@ -109,15 +104,15 @@
                 <span class="label">2. Escolha o serviço</span>
                 <select id="servico" onchange="gerarHorarios()">
                     <option value="40">Cabelo (40 minutos)</option>
-                    <option value="30">Barba (40 minutos)</option>
-                    <option value="50">Cabelo + Barba (60 minutos)</option>
+                    <option value="40">Barba (40 minutos)</option>
+                    <option value="60">Cabelo + Barba (60 minutos)</option>
                 </select>
 
                 <span class="label">3. Horários Disponíveis</span>
                 <div class="time-grid" id="lista-horarios"></div>
 
                 <div id="finalizar" class="hidden" style="margin-top:25px; border-top: 1px solid var(--border); padding-top: 20px;">
-                    <input type="text" id="nome-cliente" placeholder="Qual seu nome, seu numero celular?">
+                    <input type="text" id="nome-cliente" placeholder="Qual seu nome e celular?">
                     <button class="btn-access btn-gold" onclick="confirmarAgendamento()">Confirmar Agendamento</button>
                 </div>
             </div>
@@ -126,23 +121,23 @@
         <main id="pro" class="hidden">
             <button onclick="irPara('home')" style="background:none; border:none; color:var(--gold); margin-bottom:15px; cursor:pointer;">← Sair do Painel</button>
             
-            <span class="label">Filtrar Agenda por Dia</span>
-            <div class="calendar-wrap" style="background: rgba(0, 242, 255, 0.03); border-color: rgba(0, 242, 255, 0.2);">
-                <div class="cal-header" style="color: var(--cyan);"><span>‹</span> GESTÃO MENSAL <span>›</span></div>
+            <span class="label">Filtrar Agenda</span>
+            <div class="calendar-wrap">
+                <div class="cal-header">
+                    <span class="nav-btn" onclick="mudarMes(-1)">‹</span>
+                    <span id="mes-nome-pro">ABRIL 2026</span>
+                    <span class="nav-btn" onclick="mudarMes(1)">›</span>
+                </div>
                 <div class="days-grid" id="cal-days-pro"></div>
             </div>
 
-            <h2 class="label" id="label-dia-pro" style="color: var(--cyan);">Agenda de Hoje</h2>
+            <h2 class="label" id="label-dia-pro" style="color: var(--cyan);">Agenda</h2>
             <div id="lista-agendamentos"></div>
 
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 30px 0;">
-            
-            <span class="label">Banco de Dados (Arquivo de Texto)</span>
             <button class="btn-access" style="background: var(--success); color: white;" onclick="baixarTXT()">BAIXAR AGENDA COMPLETA (.TXT)</button>
-            
-            <p style="font-size: 0.7rem; color: gray; margin-top: 20px; text-align: center;">Para restaurar dados, cole o texto do arquivo abaixo:</p>
-            <input type="text" id="input-importar" placeholder="Cole o código do Bloco de Notas aqui" style="font-size: 0.8rem;">
-            <button class="btn-access btn-outline" onclick="importarTXT()" style="font-size: 0.8rem; padding: 15px;">Restaurar Backup</button>
+            <input type="text" id="input-importar" placeholder="Cole o código do backup aqui">
+            <button class="btn-access btn-outline" onclick="importarTXT()">Restaurar Backup</button>
         </main>
     </div>
 
@@ -152,53 +147,73 @@
         const END = 22 * 60;
         
         let agendaGlobal = JSON.parse(localStorage.getItem('salao_elite_db')) || [];
+        
+        // CONTROLE DE DATA DINÂMICA
+        let dataFoco = new Date(); // Começa no mês atual
+        let mesAtual = dataFoco.getMonth();
+        let anoAtual = dataFoco.getFullYear();
+
         let diaFocoCliente = null;
-        let diaFocoPro = new Date().getDate();
+        let diaFocoPro = dataFoco.getDate();
         let slotSelecionado = null;
+
+        const NOMES_MESES = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
 
         function atualizarStorage() {
             localStorage.setItem('salao_elite_db', JSON.stringify(agendaGlobal));
         }
 
+        function mudarMes(direcao) {
+            mesAtual += direcao;
+            if (mesAtual < 0) { mesAtual = 11; anoAtual--; }
+            if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
+            renderCalendario(document.getElementById('cliente').classList.contains('hidden') ? 'pro' : 'cliente');
+        }
+
         function irPara(tela) {
             document.querySelectorAll('main').forEach(m => m.classList.add('hidden'));
             document.getElementById(tela).classList.remove('hidden');
-            if(tela === 'cliente') renderCalendario('cliente');
-            if(tela === 'pro') renderCalendario('pro');
+            renderCalendario(tela);
         }
 
         function renderCalendario(tipo) {
+            if (tipo === 'home') return;
             const gridId = tipo === 'cliente' ? 'cal-days-cliente' : 'cal-days-pro';
-            const diaFoco = tipo === 'cliente' ? diaFocoCliente : diaFocoPro;
+            const nomeMesId = tipo === 'cliente' ? 'mes-nome-cliente' : 'mes-nome-pro';
             const grid = document.getElementById(gridId);
             
-            grid.innerHTML = `
-                <div class="weekday">D</div><div class="weekday">S</div><div class="weekday">T</div>
-                <div class="weekday">Q</div><div class="weekday">Q</div><div class="weekday">S</div><div class="weekday">S</div>
-            `;
-            for(let i=0; i<3; i++) grid.innerHTML += '<div class="day empty"></div>';
-            for(let d=1; d<=30; d++) {
-                const temEvento = agendaGlobal.some(a => a.dia == d);
+            document.getElementById(nomeMesId).innerText = `${NOMES_MESES[mesAtual]} ${anoAtual}`;
+            
+            grid.innerHTML = `<div class="weekday">D</div><div class="weekday">S</div><div class="weekday">T</div><div class="weekday">Q</div><div class="weekday">Q</div><div class="weekday">S</div><div class="weekday">S</div>`;
+
+            // Lógica para calcular dias do mês
+            const primeiroDiaSemana = new Date(anoAtual, mesAtual, 1).getDay();
+            const diasNoMes = new Date(anoAtual, mesAtual + 1, 0).getDate();
+
+            // Espaços vazios
+            for(let i=0; i<primeiroDiaSemana; i++) grid.innerHTML += '<div class="day empty"></div>';
+            
+            for(let d=1; d<=diasNoMes; d++) {
+                const temEvento = agendaGlobal.some(a => a.dia == d && a.mes == mesAtual && a.ano == anoAtual);
+                const selecionado = (tipo === 'cliente' && diaFocoCliente == d) || (tipo === 'pro' && diaFocoPro == d);
+                
                 const diaDiv = document.createElement('div');
-                diaDiv.className = `day ${temEvento ? 'has-event' : ''} ${diaFoco == d ? 'selected' : ''}`;
+                diaDiv.className = `day ${temEvento ? 'has-event' : ''} ${selecionado ? 'selected' : ''}`;
                 diaDiv.innerText = d;
-                diaDiv.onclick = () => tipo === 'cliente' ? selecionarDiaCliente(d) : selecionarDiaPro(d);
+                diaDiv.onclick = () => {
+                    if(tipo === 'cliente') {
+                        diaFocoCliente = d;
+                        document.getElementById('fluxo-horario').classList.remove('hidden');
+                        gerarHorarios();
+                    } else {
+                        diaFocoPro = d;
+                        renderProList();
+                    }
+                    renderCalendario(tipo);
+                };
                 grid.appendChild(diaDiv);
             }
             if(tipo === 'pro') renderProList();
-        }
-
-        function selecionarDiaCliente(d) {
-            diaFocoCliente = d;
-            document.getElementById('fluxo-horario').classList.remove('hidden');
-            renderCalendario('cliente');
-            gerarHorarios();
-        }
-
-        function selecionarDiaPro(d) {
-            diaFocoPro = d;
-            document.getElementById('label-dia-pro').innerText = `Agenda do Dia ${d}`;
-            renderCalendario('pro');
         }
 
         function gerarHorarios() {
@@ -206,8 +221,13 @@
             const container = document.getElementById('lista-horarios');
             container.innerHTML = "";
             document.getElementById('finalizar').classList.add('hidden');
+
             for (let t = START; t + duracao <= END; t += 20) {
-                const ocupado = agendaGlobal.some(a => a.dia == diaFocoCliente && ((t >= a.inicio && t < a.fim) || (t + duracao > a.inicio && t + duracao <= a.fim)));
+                const ocupado = agendaGlobal.some(a => 
+                    a.dia == diaFocoCliente && a.mes == mesAtual && a.ano == anoAtual &&
+                    ((t >= a.inicio && t < a.fim) || (t + duracao > a.inicio && t + duracao <= a.fim))
+                );
+
                 if (!ocupado) {
                     const h = Math.floor(t / 60).toString().padStart(2, '0');
                     const m = (t % 60).toString().padStart(2, '0');
@@ -228,45 +248,52 @@
         function confirmarAgendamento() {
             const nome = document.getElementById('nome-cliente').value;
             if(!nome) return alert("Por favor, digite seu nome!");
-
-            // Adiciona ao banco
+            
             agendaGlobal.push({ 
                 dia: diaFocoCliente, 
+                mes: mesAtual, 
+                ano: anoAtual,
                 inicio: slotSelecionado.inicio, 
                 fim: slotSelecionado.fim, 
                 nome: nome, 
                 servico: document.getElementById('servico').options[document.getElementById('servico').selectedIndex].text 
             });
 
-            // Salva os dados
             atualizarStorage();
-
-            alert(`Sucesso! Agendado para o dia ${diaFocoCliente}.`);
-
-            // ESTA É A LINHA QUE ATUALIZA A PÁGINA SOZINHA
-            location.reload(); 
+            alert(`Agendado com sucesso para ${diaFocoCliente} de ${NOMES_MESES[mesAtual]}!`);
+            location.reload(); // Atualiza para limpar o amarelo e resetar
         }
 
         function abrirSenha() { document.getElementById('modal-senha').style.display = 'flex'; }
-        function fecharSenha() { document.getElementById('modal-senha').style.display = 'none'; document.getElementById('input-senha').value = ""; }
+        function fecharSenha() { document.getElementById('modal-senha').style.display = 'none'; }
         function validarSenha() { if(document.getElementById('input-senha').value === SENHA_PRO) { fecharSenha(); irPara('pro'); } else { alert("Senha Incorreta!"); } }
 
         function renderProList() {
             const lista = document.getElementById('lista-agendamentos');
             lista.innerHTML = "";
-            const eventosDoDia = agendaGlobal.filter(a => a.dia == diaFocoPro).sort((a,b) => a.inicio - b.inicio);
-            if(eventosDoDia.length === 0) { lista.innerHTML = `<div class="empty-state">Nenhum cliente agendado para o dia ${diaFocoPro}.</div>`; return; }
+            const eventosDoDia = agendaGlobal.filter(a => a.dia == diaFocoPro && a.mes == mesAtual && a.ano == anoAtual).sort((a,b) => a.inicio - b.inicio);
+            
+            document.getElementById('label-dia-pro').innerText = `Agenda: ${diaFocoPro}/${mesAtual+1}/${anoAtual}`;
+
+            if(eventosDoDia.length === 0) {
+                lista.innerHTML = `<div class="empty-state">Sem agendamentos.</div>`;
+                return;
+            }
+
             eventosDoDia.forEach((a) => {
                 const hI = Math.floor(a.inicio / 60).toString().padStart(2, '0');
                 const mI = (a.inicio % 60).toString().padStart(2, '0');
-                const indexNaGlobal = agendaGlobal.indexOf(a);
-                lista.innerHTML += `<div class="card-pro"><div><b style="color:var(--cyan)">${hI}:${mI}</b><br><span>${a.nome}</span><br><small style="color:var(--gold)">${a.servico}</small></div><button onclick="cancelar(${indexNaGlobal})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:1.3rem;">✖</button></div>`;
+                const idx = agendaGlobal.indexOf(a);
+                lista.innerHTML += `<div class="card-pro">
+                    <div><b style="color:var(--cyan)">${hI}:${mI}</b><br><span>${a.nome}</span><br><small style="color:var(--gold)">${a.servico}</small></div>
+                    <button onclick="cancelar(${idx})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:1.3rem;">✖</button>
+                </div>`;
             });
         }
 
-        function cancelar(i) { if(confirm("Remover agendamento?")) { agendaGlobal.splice(i, 1); atualizarStorage(); renderProList(); renderCalendario('pro'); } }
-        function baixarTXT() { const dadosTexto = JSON.stringify(agendaGlobal); const blob = new Blob([dadosTexto], { type: 'text/plain' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `agenda.txt`; link.click(); }
-        function importarTXT() { const rawTexto = document.getElementById('input-importar').value; try { const dadosValidados = JSON.parse(rawTexto); agendaGlobal = dadosValidados; atualizarStorage(); alert("Restaurado!"); location.reload(); } catch(e) { alert("Erro no backup!"); } }
+        function cancelar(i) { if(confirm("Remover?")) { agendaGlobal.splice(i, 1); atualizarStorage(); renderCalendario('pro'); } }
+        function baixarTXT() { const blob = new Blob([JSON.stringify(agendaGlobal)], { type: 'text/plain' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `agenda_salao.txt`; link.click(); }
+        function importarTXT() { try { agendaGlobal = JSON.parse(document.getElementById('input-importar').value); atualizarStorage(); location.reload(); } catch(e) { alert("Erro!"); } }
     </script>
 </body>
 </html>
